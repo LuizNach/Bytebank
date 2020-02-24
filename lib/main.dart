@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -20,48 +21,55 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: new MyHomePage(title: 'Titulo da Home Page'),
+      home: new ListaTransferencias(title: 'Titulo da Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  
-  MyHomePage({this.title});
+class ListaTransferencias extends StatefulWidget {
 
   final String title;
+
+  ListaTransferencias({this.title});
+
+  @override
+  State<StatefulWidget> createState() {
+    return ListaTransferenciasState();
+  }
+}
+
+class ListaTransferenciasState extends State<ListaTransferencias> {
+
+  final List<Transferencia> listaTransferencias = List();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(this.title)),
-      body: ListaTransferencias(),
+      appBar: AppBar(title: Text(widget.title)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           final Future<Transferencia> future = Navigator.push(context, MaterialPageRoute(builder: (context) {
             return FormularioTransferencia();
           }));
-          future.then( (trasnferencia ){ print(trasnferencia); print('$trasnferencia'); } );
+          future.then( (transferencia ){ 
+            print(transferencia); 
+            print('$transferencia'); 
+            if(transferencia != null)listaTransferencias.add(transferencia);
+            } 
+          );
         }, 
-      child: Icon(Icons.add),
+        child: Icon(Icons.add),
+      ),
+      body: ListView.builder(
+        itemCount: listaTransferencias.length,
+        itemBuilder: (context, index ){
+          final transferencia = listaTransferencias[index];
+          return ItemTransferencia(transferencia);
+        },
       ),
     );
   }
 
-}
-
-class ListaTransferencias extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children:<Widget>[
-        ItemTransferencia(Transferencia(100,1000)),
-        ItemTransferencia(Transferencia(200,2000)),
-        ItemTransferencia(Transferencia(500,3000)),
-      ],
-    );
-  }
 }
 
 class ItemTransferencia extends StatelessWidget {
