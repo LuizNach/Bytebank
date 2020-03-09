@@ -5,9 +5,10 @@ import 'screens/dashboard.dart';
 
 void main() {
   runApp(MyApp());
-  save(Contact(0, 'Luiz', 1000)).then( (id) => {
-    findAllContacts().then((contacts){ print(contacts.toString()); } )
-  });
+  // save(Contact(0, 'Luiz', 1000)).then( (id) => {
+  //   findAllContacts().then((contacts){ print(contacts.toString()); } )
+  // });
+  //save(Contact(0, 'Luizera', 2000));
 }
 
 class MyApp extends StatelessWidget {

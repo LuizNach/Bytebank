@@ -11,7 +11,9 @@ Future<Database> createDatabase() {
     //join: a partir do file system que ele esta operando faz a conversao correta
     final String path = join(dbPath, 'bytebank.db');
 
-    return openDatabase(path, onCreate: (db, version) {
+    return openDatabase(path, 
+    onDowngrade: onDatabaseDowngradeDelete,
+    onCreate: (db, version) {
       db.execute(
         "CREATE TABLE contacts("
         "id INTEGER PRIMARY KEY, " 
