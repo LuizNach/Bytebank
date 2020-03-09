@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'database/app_database.dart';
+import 'models/contact.dart';
+import 'screens/dashboard.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+  save(Contact(0, 'Luiz', 1000)).then( (id) => {
+    findAllContacts().then((contacts){ print(contacts.toString()); } )
+  });
+}
 
 class MyApp extends StatelessWidget {
     // This widget is the root of your application.
@@ -17,56 +25,6 @@ class MyApp extends StatelessWidget {
         )
       ),
       home: new Dashboard(title: 'Dashboard'),
-    );
-  }
-}
-
-class Dashboard extends StatelessWidget {
-
-  final String title;
-
-  Dashboard({this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: AppBar(
-        title: Text(this.title),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        //crossAxisAlignment: ,
-        children: <Widget> [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('images/bytebank_logo.png'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 120,
-              width: 150,
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Icon(Icons.people, 
-                    color: Colors.white,
-                    size: 32.0,
-                  ),
-                  Text('Contacts', 
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0),),
-                ]
-              )
-            ),
-          )
-        ]
-      ),
     );
   }
 }
