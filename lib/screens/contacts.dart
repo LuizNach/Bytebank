@@ -28,7 +28,7 @@ class ContactsListState extends State<ContactsList> {
           onPressed: () => {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
               return ContactForm();
-            })).then((newContact) => {print("newContact")}),
+            })).then((newContact) => {print("newContact" + newContact.toString())}),
           },
         ),
         body: FutureBuilder<List<Contact>>(

@@ -21,7 +21,7 @@ Future<Database> createDatabase() {
         "account_number INTEGER "
         ")"
       );
-    }, version: 1);
+    }, version: 1 );
   });
 }
 
