@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
-import '../database/app_database.dart';
+import '../database/dao/contact_dao.dart';
 import '../models/contact.dart';
 import 'contact_form.dart';
 
@@ -14,6 +13,7 @@ class ContactsList extends StatefulWidget {
 
 class ContactsListState extends State<ContactsList> {
   //final List<Contact> listContacts = List();
+  final ContactDao _dao = ContactDao();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ContactsListState extends State<ContactsList> {
         ),
         body: FutureBuilder<List<Contact>>(
           initialData: List<Contact>(), //Initial data solves the problem to verify the snapshot data not null
-          future: Future.delayed(Duration( seconds: 1)).then( (value) {return findAllContacts();} ) , //All the the return will be contained on the async snapshot.data
+          future: Future.delayed(Duration( seconds: 1)).then( (value) {return _dao.findAllContacts();} ) ,//_dao.findAllContacts(), //All the the return will be contained on the async snapshot.data
           builder: ( context, snapshot) {
 
             switch( snapshot.connectionState ){
