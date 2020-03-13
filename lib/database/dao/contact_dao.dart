@@ -16,7 +16,9 @@ class ContactDao {
 
     final Database db = await getDatabase();
 
-    return _contactToMap(contact, db);
+    Map<String, dynamic> contactMap = _contactToMap(contact);
+
+    return db.insert(_tableName,  contactMap) ;
 
     // Jeito sem async/await de fazer a funcao
     // return getDatabase()
@@ -32,20 +34,22 @@ class ContactDao {
     // });
   }
 
-  Future<int> _contactToMap(Contact contact, Database db) {
+  Map<String, dynamic> _contactToMap(Contact contact) {
+
     final Map<String, dynamic> contactMap = Map();
+
     //contactMap["id"] = contact.id; // sq lite will take care of the id on its own responsability
     contactMap["name"] = contact.fullName;
     contactMap["account_number"] = contact.accountNumber;
     
-    return db.insert('contacts', contactMap) ;
+    return contactMap;
   }
 
   Future<List<Contact>> findAllContacts() async {
 
     final Database db = await getDatabase();
 
-    final List<Map<String, dynamic>> result = await db.query('contacts');
+    final List<Map<String, dynamic>> result = await db.query(_tableName);
     return _mapToList(result);
 
     // Jeito sem async/await de fazer a funcao
@@ -62,6 +66,7 @@ class ContactDao {
   }
 
   List<Contact> _mapToList(List<Map<String, dynamic>> result) {
+
     final List<Contact> listContacts = List();
     
     for(Map<String, dynamic> map in result){
@@ -73,4 +78,29 @@ class ContactDao {
     
     return listContacts;
   }
+
+  Future<int> updateContact(Contact contact) async {
+
+    final Database db = await getDatabase();
+    final Map<String, dynamic> contactMap = _contactToMap(contact);
+
+    return db.update(
+      _tableName,
+      contactMap,
+      where: 'id = ?',
+      whereArgs: [contact.id],
+    );
+  }
+
+  Future<int> deleteContact(int id) async {
+
+    final Database db = await getDatabase();
+
+    return db.delete(
+      _tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
 }
