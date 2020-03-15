@@ -1,14 +1,10 @@
+import 'package:bytebank/web_api/webclient.dart';
 import 'package:flutter/material.dart';
-import 'database/app_database.dart';
-import 'models/contact.dart';
 import 'screens/dashboard.dart';
 
 void main() {
+  findAllTransactions();
   runApp(MyApp());
-  // save(Contact(0, 'Luiz', 1000)).then( (id) => {
-  //   findAllContacts().then((contacts){ print(contacts.toString()); } )
-  // });
-  //save(Contact(0, 'Luizera', 2000));
 }
 
 class MyApp extends StatelessWidget {

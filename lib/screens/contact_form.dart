@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bytebank/models/contact.dart';
-import 'package:bytebank/database/dao/contact_dao.dart';
 
 import '../database/dao/contact_dao.dart' as prefix0;
 
