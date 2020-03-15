@@ -32,7 +32,7 @@ class LoggingInterceptor implements InterceptorContract {
 
 Future<List<Transaction>> findAllTransactions() async {
   final Client client = HttpClientWithInterceptor.build(interceptors: [LoggingInterceptor()]);
-  final Response response = await client.get(url);
+  final Response response = await client.get(url).timeout( Duration( seconds: 5) );
 
   //response body is a tring we must convert it
   final List<dynamic> jsonData = jsonDecode(response.body);

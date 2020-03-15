@@ -1,3 +1,5 @@
+import 'package:bytebank/components/centered_message.dart';
+import 'package:bytebank/components/progress.dart';
 import 'package:flutter/material.dart';
 
 import '../database/dao/contact_dao.dart';
@@ -18,95 +20,78 @@ class ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Transfer")),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(
-            Icons.add,
-            color: Theme.of(context).accentColor,
-          ),
-          onPressed: () => {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return ContactForm();
-            })).then((newContact) => {print("newContact" + newContact.toString())}),
-          },
+      appBar: AppBar(title: Text("Transfer")),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).accentColor,
         ),
-        body: FutureBuilder<List<Contact>>(
-          initialData: List<Contact>(), //Initial data solves the problem to verify the snapshot data not null
-          future: Future.delayed(Duration( seconds: 1)).then( (value) {return _dao.findAllContacts();} ) ,//_dao.findAllContacts(), //All the the return will be contained on the async snapshot.data
-          builder: ( context, snapshot) {
+        onPressed: () => {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ContactForm();
+          })).then(
+              (newContact) => {print("newContact" + newContact.toString())}),
+        },
+      ),
+      body: FutureBuilder<List<Contact>>(
+        initialData: List<
+            Contact>(), //Initial data solves the problem to verify the snapshot data not null
+        future: Future.delayed(Duration(seconds: 1)).then((value) {
+          return _dao.findAllContacts();
+        }), //All the the return will be contained on the async snapshot.data
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              //Loading page
+              return Progress();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              final List<Contact> listContacts = snapshot.data;
 
-            switch( snapshot.connectionState ){
+              return ListView.builder(
+                itemCount: listContacts.length,
+                itemBuilder: (context, index) {
+                  final Contact contact = listContacts[index];
+                  return _ContactItem(contact);
+                },
+              );
+              break;
+          }
 
-              case ConnectionState.none:
-                break;
-              case ConnectionState.waiting:
-                //Loading page
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(),
-                      Text("Loading...")
-                    ]
-                  ),
-                );
-                break;
-              case ConnectionState.active:
-                break;
-              case ConnectionState.done:
-                final List<Contact> listContacts = snapshot.data;
+          //If there is any problem that the snapshot didn't behave properly we must show an error message
+          return CenteredMessage("Unkown Error!");
 
-                return ListView.builder(
-                  itemCount: listContacts.length,
-                  itemBuilder: (context, index) {
-                    final Contact contact = listContacts[index];
-                    return _ContactItem(contact);
-                  },
-                );
-                break;
-            }
+          // if( snapshot.data != null){
+          //   final List<Contact> listContacts = snapshot.data;
 
-            //If there is any problem that the snapshot didn't behave properly we must show an error message
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text("Unknown Error!")
-                ]
-              ),
-            );
-            
-            // if( snapshot.data != null){
-            //   final List<Contact> listContacts = snapshot.data;
+          //   return ListView.builder(
+          //     itemCount: listContacts.length,
+          //     itemBuilder: (context, index) {
+          //       final Contact contact = listContacts[index];
+          //       return _ContactItem(contact);
+          //     },
+          //   );
 
-            //   return ListView.builder(
-            //     itemCount: listContacts.length,
-            //     itemBuilder: (context, index) {
-            //       final Contact contact = listContacts[index];
-            //       return _ContactItem(contact);
-            //     },
-            //   );
+          // } else {
 
-            // } else {
-
-            //   //Loading page
-            //   return Center(
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: <Widget>[
-            //         CircularProgressIndicator(),
-            //         Text("Loading...")
-            //       ]
-            //     ),
-            //   );
-            // }
-            
-          },
-        ),
+          //   //Loading page
+          //   return Center(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: <Widget>[
+          //         CircularProgressIndicator(),
+          //         Text("Loading...")
+          //       ]
+          //     ),
+          //   );
+          // }
+        },
+      ),
     );
   }
 }
