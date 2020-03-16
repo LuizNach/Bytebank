@@ -1,7 +1,7 @@
 import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/models/transaction.dart';
-import 'package:bytebank/web_api/webclient.dart';
+import 'package:bytebank/web_api/webclients/transaction_webclient.dart';
 import 'package:flutter/material.dart';
 
 class Transactionsist extends StatelessWidget {

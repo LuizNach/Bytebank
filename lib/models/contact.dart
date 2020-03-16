@@ -10,4 +10,9 @@ class Contact {
     print("id: $id \nName: $fullName \nAccount: $accountNumber" );
     return "id: $id Name: $fullName Account: $accountNumber";
   }
+
+  Contact.fromJson( Map<String, dynamic>json) :
+      id = json['id'],
+      fullName = json['name'],
+      accountNumber = json['accountNumber'];
 }
