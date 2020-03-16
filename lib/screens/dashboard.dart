@@ -29,7 +29,7 @@ class Dashboard extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children:<Widget>[
-                  new _FeatureItem('Transfer', Icons.monetization_on,
+                  new _FeatureItem('Contacts', Icons.monetization_on,
                       onClick: () {
                         this._navigateToTransfer(context);
                       }
@@ -39,7 +39,7 @@ class Dashboard extends StatelessWidget {
                         this._navigateToTransactionFeed(context);
                       }
                   ),
-                  new _FeatureItem('Transfer', Icons.monetization_on,
+                  new _FeatureItem('Contacts', Icons.monetization_on,
                       onClick: () {
                         this._navigateToTransfer(context);
                       }

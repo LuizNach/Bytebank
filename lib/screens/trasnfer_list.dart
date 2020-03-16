@@ -1,5 +1,6 @@
 import 'package:bytebank/components/centered_message.dart';
 import 'package:bytebank/components/progress.dart';
+import 'package:bytebank/screens/transaction_form.dart';
 import 'package:flutter/material.dart';
 
 import '../database/dao/contact_dao.dart';
@@ -20,7 +21,7 @@ class ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Transfer")),
+      appBar: AppBar(title: Text("Contacts")),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(
@@ -56,7 +57,7 @@ class ContactsListState extends State<ContactsList> {
                 itemCount: listContacts.length,
                 itemBuilder: (context, index) {
                   final Contact contact = listContacts[index];
-                  return _ContactItem(contact);
+                  return _ContactItem(contact, onClick: () { this._navigateToTransactionForm(context, contact); });
                 },
               );
               break;
@@ -94,17 +95,27 @@ class ContactsListState extends State<ContactsList> {
       ),
     );
   }
+
+  void _navigateToTransactionForm(BuildContext context, Contact contact){
+    Navigator.of(context).push(
+      MaterialPageRoute( builder: (context){
+        return TransactionForm(contact);
+      }) 
+    );
+  }
 }
 
 class _ContactItem extends StatelessWidget {
   final Contact contact;
+  final Function onClick;
 
-  _ContactItem(this.contact);
+  _ContactItem(this.contact, {@required this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return Card(
         child: ListTile(
+          onTap: () => onClick(),
       title: Text(
         contact.fullName,
         style: TextStyle(fontSize: 24.0),
