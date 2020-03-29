@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:bytebank/web_api/webclient.dart';
 import 'package:http/http.dart';
@@ -24,7 +22,7 @@ List<Transaction> _responseToTransactions(Response response) {
   return transactions;
 }
 
-Future<Transaction> saveTransaction(Transaction transaction) async {
+Future<Transaction> saveTransaction(Transaction transaction, String password) async {
   Map<String, dynamic> transactionMap = _transactionToMap(transaction);
 
   final String transactionJson = jsonEncode(transactionMap);
@@ -33,7 +31,7 @@ Future<Transaction> saveTransaction(Transaction transaction) async {
     url + "/transactions",
     headers: {
       'Content-type': 'application/json',
-      'password': '1000',
+      'password': password,
     },
     body: transactionJson,
   );
